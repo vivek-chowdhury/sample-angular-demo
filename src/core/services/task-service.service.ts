@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { ITask } from './interfaces/itask.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -11,17 +12,15 @@ export class TaskService {
   constructor(private http: HttpClient) {}
 
   public getTaskList(): Observable<any> {
-    return this.http
-      .get<any>('https://tasksmanager-302f5.firebaseio.com/Task.json')
-      .pipe(
-        tap((data) =>
-          console.log('Task List fetched from server successfully !')
-        ),
-        map((data) => {
-          return this.parseTaskList(data);
-        }),
-        catchError(this.handleError)
-      );
+    return this.http.get<any>(`${environment.baseUrl}/Task.json`).pipe(
+      tap((data) =>
+        console.log('Task List fetched from server successfully !')
+      ),
+      map((data) => {
+        return this.parseTaskList(data);
+      }),
+      catchError(this.handleError)
+    );
   }
 
   parseTaskList(data): ITask[] {
@@ -38,21 +37,19 @@ export class TaskService {
   public insertTask(task: ITask): Observable<any> {
     const o = { ...task };
     delete o.key;
-    return this.http
-      .post<any>('https://tasksmanager-302f5.firebaseio.com/Task.json', o)
-      .pipe(
-        tap((data) => console.log('New task added to Task List ! ')),
-        mergeMap((data) => {
-          return this.getTaskList();
-        })
-      );
+    return this.http.post<any>(`${environment.baseUrl}/Task.json`, o).pipe(
+      tap((data) => console.log('New task added to Task List ! ')),
+      mergeMap((data) => {
+        return this.getTaskList();
+      })
+    );
   }
 
   public updateTask(task: ITask): Observable<any> {
     const o = { ...task };
     const name = o.key;
     delete o.key;
-    const url = `https://tasksmanager-302f5.firebaseio.com/Task/${name}.json`;
+    const url = `${environment.baseUrl}/Task/${name}.json`;
     return this.http.put<any>(url, o).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
       mergeMap((data) => {
@@ -63,7 +60,7 @@ export class TaskService {
 
   public deleteTask(task: ITask): Observable<any> {
     const name = task.key;
-    const url = `https://tasksmanager-302f5.firebaseio.com/Task/${name}.json`;
+    const url = `${environment.baseUrl}/Task/${name}.json`;
     return this.http.delete<any>(url).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
       mergeMap((data) => {
