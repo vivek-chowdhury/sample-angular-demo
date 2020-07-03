@@ -1,0 +1,72 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>{{ title }}</h2>
+  <mat-dialog-content>
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="taskGroup">
+          <div>
+            <mat-form-field class="field-full-width">
+              <mat-label>Task Title</mat-label>
+              <input
+                matInput
+                placeholder="Enter Task title"
+                value="Sushi"
+                formControlName="description"
+              />
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field class="field-full-width">
+              <mat-label>Short Description</mat-label>
+              <input
+                matInput
+                placeholder="Enter Task description"
+                formControlName="shortDescription"
+                value="Sushi"
+              />
+            </mat-form-field>
+          </div>
+
+          <!--Priorty Drop down-->
+          <mat-form-field appearance="fill" class="field-full-width">
+            <mat-label>Priority *</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let state of states" [value]="state.key">{{
+                state.value
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!---Status Drop down---->
+          <div>
+            <mat-form-field appearance="fill" class="field-full-width">
+              <mat-label>Status *</mat-label>
+              <mat-select formControlName="status">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let stat of status" [value]="stat.key">{{
+                  stat.value
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!--End-->
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="onSaveClicked()"
+      [disabled]="!taskGroup.valid"
+    >
+      Save
+    </button>
+    <button mat-stroked-button color="warn" (click)="onCloseClicked()">
+      Close
+    </button>
+  </mat-dialog-actions>
+</div>
