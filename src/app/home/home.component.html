@@ -1,0 +1,12 @@
+<div class="homeContainer md-0">
+  <img src="../../assets/images/sample.jpg" />
+  <div class="info">
+    <app-task-list
+      [(dataSource)]="taskList"
+      (updateTask)="onUpdateTaskInvoked($event)"
+    ></app-task-list>
+  </div>
+  <button mat-stroked-button color="primary" (click)="addNewTask()">
+    Add New Task
+  </button>
+</div>

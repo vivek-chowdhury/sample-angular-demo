@@ -1,0 +1,17 @@
+.homeContainer {
+  margin: 0px 50px 0px 50px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  background-size: cover;
+  height: 400px;
+}
+
+.info {
+  max-height: 320px;
+  min-height: 320px;
+  overflow: auto;
+}

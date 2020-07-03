@@ -1,0 +1,28 @@
+table {
+  width: 100%;
+}
+
+table tr.mat-row {
+  height: 50px;
+}
+
+.light-row {
+  background-color: rgba(103, 58, 183, 0.15);
+}
+
+.dark-row {
+  background-color: #ffffff;
+}
+
+.bold-header {
+  font-weight: bolder;
+  font-size: medium;
+}
+
+.mat-column-select {
+  overflow: initial;
+}
+
+button {
+  margin: 10px;
+}
