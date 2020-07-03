@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>My CRUD APPLICATION</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar-row>
+  <mat-menu #menu>
+    <button mat-menu-item (click)="onAddTaskClicked()">
+      <mat-icon>library_add</mat-icon>
+      <span>Add Task</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
