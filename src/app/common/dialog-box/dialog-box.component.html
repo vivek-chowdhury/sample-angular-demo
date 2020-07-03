@@ -57,16 +57,24 @@
     </mat-card>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button
-      mat-stroked-button
-      color="primary"
-      (click)="onSaveClicked()"
-      [disabled]="!taskGroup.valid"
-    >
-      Save
-    </button>
-    <button mat-stroked-button color="warn" (click)="onCloseClicked()">
-      Close
-    </button>
+    <span class="col-2 pr-2">
+      <button
+        mat-raised-button
+        color="primary"
+        class="w-100"
+        (click)="onSaveClicked()"
+        [disabled]="!taskGroup.valid"
+      >
+        Save
+      </button>
+      <button
+        mat-raised-button
+        class="w-100"
+        color="warn"
+        (click)="onCloseClicked()"
+      >
+        Close
+      </button>
+    </span>
   </mat-dialog-actions>
 </div>
