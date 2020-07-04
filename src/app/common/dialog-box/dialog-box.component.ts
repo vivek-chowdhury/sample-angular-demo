@@ -1,5 +1,5 @@
 import { TaskService } from './../../../core/services/task-service.service';
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormConstants } from './form-constants';
@@ -9,12 +9,14 @@ import { FormConstants } from './form-constants';
   templateUrl: './dialog-box.component.html',
   styleUrls: ['./dialog-box.component.scss'],
 })
-export class DialogBoxComponent implements OnInit {
+export class DialogBoxComponent implements OnInit, OnDestroy {
   @Input() title = 'Testing ';
   taskId: string;
   states = FormConstants.STATES;
   status = FormConstants.STATUS;
   taskGroup: FormGroup;
+  updateObservable$;
+  insertObservale$;
 
   constructor(
     public dialogRef: MatDialogRef<DialogBoxComponent>,
@@ -74,13 +76,17 @@ export class DialogBoxComponent implements OnInit {
         this.data && this.data.task ? this.data.task.key : '';
       o.key = name;
       if (name) {
-        this.taskService.updateTask(o).subscribe((result) => {
-          this.dialogRef.close(result);
-        });
+        this.updateObservable$ = this.taskService
+          .updateTask(o)
+          .subscribe((result) => {
+            this.dialogRef.close(result);
+          });
       } else {
-        this.taskService.insertTask(o).subscribe((result) => {
-          this.dialogRef.close(result);
-        });
+        this.insertObservale$ = this.taskService
+          .insertTask(o)
+          .subscribe((result) => {
+            this.dialogRef.close(result);
+          });
       }
     }
   }
@@ -91,5 +97,18 @@ export class DialogBoxComponent implements OnInit {
    */
   onCloseClicked(): void {
     this.dialogRef.close();
+  }
+
+  /**
+   * @description
+   */
+  ngOnDestroy(): void {
+    if (this.updateObservable$) {
+      this.updateObservable$.unsubscribe();
+    }
+
+    if (this.insertObservale$) {
+      this.insertObservale$.unsubscribe();
+    }
   }
 }
