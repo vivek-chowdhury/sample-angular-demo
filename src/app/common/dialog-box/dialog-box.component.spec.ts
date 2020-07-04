@@ -1,10 +1,9 @@
+import { TaskService } from './../../core/services/task-service.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MockTask } from './../../../mock/mock-service/mock-task-list.service';
-import { TaskService } from './../../../core/services/task-service.service';
 import {
   MatDialogModule,
   MAT_DIALOG_DATA,

@@ -1,5 +1,5 @@
+import { TaskService } from './core/services/task-service.service';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TaskService } from './../core/services/task-service.service';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
