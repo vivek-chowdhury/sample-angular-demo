@@ -3,7 +3,7 @@ import {
   ITask,
 } from './../../core/services/interfaces/itask.interface';
 import { TaskService } from './../../core/services/task-service.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   MatDialog,
   MatDialogConfig,
@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit {
   onUpdateTaskInvoked(event: ITaskEvent): void {
     switch (event.action) {
       case ActionConstants.DELETE_TASK:
-        console.log(event.task);
         this.deletedSelectedTask(event.task);
         break;
       case ActionConstants.UPDATE_TASK:
@@ -68,6 +67,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  /**
+   * @description This function is responsible for deleting selected task from the list.
+   *
+   * @param ITask It contains task reference
+   */
   deletedSelectedTask(task: ITask): void {
     this.taskService.deleteTask(task).subscribe((result) => {
       if (result) {
@@ -75,6 +79,7 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
   /**
    * @description This functiton is invoked when user either request to create new task or trying to
    * update existing one.
