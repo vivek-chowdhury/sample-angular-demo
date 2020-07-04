@@ -1,4 +1,4 @@
-import { TaskService } from './../../../core/services/task-service.service';
+import { TaskService } from './../../core/services/task-service.service';
 import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

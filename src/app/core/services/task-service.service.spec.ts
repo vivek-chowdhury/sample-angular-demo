@@ -1,5 +1,5 @@
+import { MockTask } from './../../../mock/mock-service/mock-task-list.service';
 import { ITask } from './interfaces/itask.interface';
-import { MockTask } from './../../mock/mock-service/mock-task-list.service';
 import { TestBed, getTestBed, fakeAsync, tick } from '@angular/core/testing';
 import {
   HttpClientTestingModule,

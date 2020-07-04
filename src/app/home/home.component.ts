@@ -1,8 +1,8 @@
 import {
-  ITaskEvent,
   ITask,
-} from './../../core/services/interfaces/itask.interface';
-import { TaskService } from './../../core/services/task-service.service';
+  ITaskEvent,
+} from './../core/services/interfaces/itask.interface';
+import { TaskService } from './../core/services/task-service.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   MatDialog,

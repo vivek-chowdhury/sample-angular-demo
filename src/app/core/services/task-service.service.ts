@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment';
+import { environment } from './../../../environments/environment.prod';
 import { ITask } from './interfaces/itask.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
