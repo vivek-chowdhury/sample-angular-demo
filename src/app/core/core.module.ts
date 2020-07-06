@@ -9,6 +9,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [FooterComponent, HeaderComponent],
   imports: [CommonModule, BrowserModule, BrowserAnimationsModule, SharedModule],
-  exports: [FooterComponent, HeaderComponent],
+  exports: [
+    FooterComponent,
+    HeaderComponent,
+    BrowserModule,
+    BrowserAnimationsModule,
+  ],
 })
 export class CoreModule {}

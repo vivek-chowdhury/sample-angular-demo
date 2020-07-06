@@ -1,3 +1,4 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { LoginModule } from './screens/login/login.module';
 import { HomeModule } from './screens/home/home.module';
 import { NgModule } from '@angular/core';

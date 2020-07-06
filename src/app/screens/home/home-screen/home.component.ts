@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
    *
    */
   ngOnInit(): void {
-    // this.spinnerManager.showSpinner();
     this.taskList = [];
     this.getTaskList();
   }
@@ -45,6 +44,10 @@ export class HomeComponent implements OnInit {
   getTaskList(): void {
     this.taskService.getTaskList().subscribe((list) => {
       this.taskList = list;
+      const timeoutId = setTimeout(() => {
+        this.spinnerManager.hideSpinner();
+        clearTimeout(timeoutId);
+      }, 10);
     });
   }
 

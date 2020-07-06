@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
    */
   ngOnInit(): void {
     this.spinnerManager.showSpinner$.subscribe((value) => {
+      console.log('--------> ', value);
       this.showSpinner = value;
     });
   }

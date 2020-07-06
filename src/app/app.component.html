@@ -1,11 +1,10 @@
 <div class="rootContainer">
   <app-header></app-header>
   <div>
-    <!-- <app-home></app-home> -->
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </div>
-<div class="spinner-container" *ngIf="showSpinner">
+<div *ngIf="showSpinner" class="spinner-container">
   <mat-spinner></mat-spinner>
 </div>
