@@ -2,26 +2,6 @@ import { ITaskEvent } from './../../core/services/interfaces/itask.interface';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ActionConstants } from '../action-constants';
 
-export interface PeriodicElement {
-  description: string;
-  shortDescription: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    description: 'this is short description',
-    shortDescription: 'short description added here',
-  },
-  {
-    description: 'this is short description',
-    shortDescription: 'short description added here',
-  },
-  {
-    description: 'this is short description',
-    shortDescription: 'short description added here',
-  },
-];
-
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',

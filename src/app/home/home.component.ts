@@ -1,16 +1,16 @@
-import {
-  ITask,
-  ITaskEvent,
-} from './../core/services/interfaces/itask.interface';
-import { TaskService } from './../core/services/task-service.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   MatDialog,
   MatDialogConfig,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { DialogBoxComponent } from '../common/dialog-box/dialog-box.component';
 import { ActionConstants } from './action-constants';
+import { DialogBoxComponent } from './../shared/dialog-box/dialog-box.component';
+import {
+  ITask,
+  ITaskEvent,
+} from './../core/services/interfaces/itask.interface';
+import { TaskService } from './../core/services/task-service.service';
 
 @Component({
   selector: 'app-home',

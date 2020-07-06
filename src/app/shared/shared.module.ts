@@ -1,5 +1,7 @@
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,9 +17,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-  declarations: [],
+  declarations: [DialogBoxComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
@@ -44,6 +47,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatMenuModule,
+    DialogBoxComponent,
   ],
+  entryComponents: [DialogBoxComponent],
 })
 export class SharedModule {}
