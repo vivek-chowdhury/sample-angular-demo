@@ -5,5 +5,7 @@ export class MockRouter {
   events: Subject<RouterEvent> = new Subject<RouterEvent>();
   navigate(args) {}
 
-  navigateByUrl(args) {}
+  navigateByUrl(args) {
+    return args[0];
+  }
 }
