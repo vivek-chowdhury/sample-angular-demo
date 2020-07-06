@@ -1,3 +1,4 @@
+import { SpinnerManagerService } from './core/spinner/spinner-manager.service';
 import { TaskService } from './core/services/task-service.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TestBed, async } from '@angular/core/testing';
@@ -8,7 +9,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [TaskService],
+      providers: [TaskService, SpinnerManagerService],
       imports: [MatDialogModule, RouterTestingModule],
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,3 +1,4 @@
+import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
 import { TaskService } from '../../../core/services/task-service.service';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +16,7 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeComponent],
       imports: [MatButtonModule, HttpClientTestingModule, MatDialogModule],
-      providers: [TaskService],
+      providers: [TaskService, SpinnerManagerService],
     }).compileComponents();
   }));
 
