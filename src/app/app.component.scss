@@ -4,8 +4,25 @@
   flex-direction: column;
 }
 
+.spinnerContainer {
+  display: inline;
+}
+
 .appContainer {
   height: 100vh;
   width: 100vh;
   display: block;
+}
+
+.spinner-container {
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

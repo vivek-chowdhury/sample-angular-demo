@@ -1,3 +1,4 @@
+import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
 import { Component, OnInit } from '@angular/core';
 import {
   MatDialog,
@@ -21,7 +22,11 @@ export class HomeComponent implements OnInit {
   dialogRef: MatDialogRef<DialogBoxComponent>;
   taskList: ITask[];
 
-  constructor(private taskService: TaskService, private matDialog: MatDialog) {}
+  constructor(
+    private taskService: TaskService,
+    private matDialog: MatDialog,
+    private spinnerManager: SpinnerManagerService
+  ) {}
 
   /**
    * @description This function is invoked when View is initialised it is responsible for
@@ -29,6 +34,7 @@ export class HomeComponent implements OnInit {
    *
    */
   ngOnInit(): void {
+    // this.spinnerManager.showSpinner();
     this.taskList = [];
     this.getTaskList();
   }
