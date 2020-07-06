@@ -7,19 +7,15 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, AfterViewChecked {
+export class AppComponent implements OnInit {
   title = 'crud';
-  showSpinner: boolean;
-  constructor(private spinnerManager: SpinnerManagerService) {
-    this.showSpinner = true;
-  }
-
-  ngOnInit(): void {}
+  showSpinner = true;
+  constructor(private spinnerManager: SpinnerManagerService) {}
 
   /**
    * @description
    */
-  ngAfterViewChecked(): void {
+  ngOnInit(): void {
     this.spinnerManager.showSpinner$.subscribe((value) => {
       this.showSpinner = value;
     });
