@@ -1,0 +1,43 @@
+<div class="loginContainer">
+  <mat-card class="cardContainer mat-elevation-z12">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginGroup">
+        <div>
+          <mat-form-field class="field-full-width">
+            <mat-label>User Name</mat-label>
+            <input
+              matInput
+              placeholder="Enter user name"
+              formControlName="userName"
+            />
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="field-full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              placeholder="Enter password"
+              formControlName="password"
+            />
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onLoginClicked()"
+        [disabled]="!loginGroup.valid"
+      >
+        Login
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

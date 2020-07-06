@@ -1,4 +1,4 @@
-import { TaskService } from './../../core/services/task-service.service';
+import { TaskService } from '../../../core/services/task-service.service';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';

@@ -1,6 +1,6 @@
-import { ITaskEvent } from './../../../core/services/interfaces/itask.interface';
+import { ActionConstants } from './../action-constants';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { ActionConstants } from '../action-constants';
+import { ITaskEvent } from './../../../../core/services/interfaces/itask.interface';
 
 @Component({
   selector: 'app-task-list',
