@@ -1,4 +1,4 @@
-import { ITaskEvent } from './../../core/services/interfaces/itask.interface';
+import { ITaskEvent } from './../../../core/services/interfaces/itask.interface';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ActionConstants } from '../action-constants';
 

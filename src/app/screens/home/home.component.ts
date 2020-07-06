@@ -5,12 +5,12 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { ActionConstants } from './action-constants';
-import { DialogBoxComponent } from './../shared/dialog-box/dialog-box.component';
+import { DialogBoxComponent } from './../../shared/dialog-box/dialog-box.component';
 import {
   ITask,
   ITaskEvent,
-} from './../core/services/interfaces/itask.interface';
-import { TaskService } from './../core/services/task-service.service';
+} from './../../core/services/interfaces/itask.interface';
+import { TaskService } from './../../core/services/task-service.service';
 
 @Component({
   selector: 'app-home',

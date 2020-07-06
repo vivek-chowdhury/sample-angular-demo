@@ -1,4 +1,4 @@
-import { MockTask } from './../../../mock/mock-service/mock-task-list.service';
+import { MockTask } from './../../../../mock/mock-service/mock-task-list.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskListComponent } from './task-list.component';
