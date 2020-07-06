@@ -1,8 +1,9 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <span>My CRUD APPLICATION</span>
+    <button mat-button (click)="onHomeClicked()">Home</button>
     <span class="example-spacer"></span>
-    <button mat-button>About</button>
+    <button mat-button (click)="onAboutClicked()">About</button>
     <button mat-button>Contact</button>
     <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
@@ -12,6 +13,11 @@
     <button mat-menu-item (click)="onAddTaskClicked()">
       <mat-icon>library_add</mat-icon>
       <span>Add Task</span>
+    </button>
+
+    <button mat-menu-item (click)="onAddTaskClicked()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Logout</span>
     </button>
   </mat-menu>
 </mat-toolbar>

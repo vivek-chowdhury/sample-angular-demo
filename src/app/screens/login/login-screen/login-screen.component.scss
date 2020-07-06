@@ -4,11 +4,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
 }
 
 .cardContainer {
   width: 40%;
+}
+.invalidLogin {
+  color: red;
+  font-weight: bold;
 }
 
 .field-full-width {

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginScreenComponent implements OnInit {
   loginGroup: FormGroup;
+  isInvalidLogin: boolean;
 
   constructor(private fb: FormBuilder, private router: Router) {}
 
@@ -33,7 +34,14 @@ export class LoginScreenComponent implements OnInit {
       const user = this.loginGroup.value;
       if (user.userName === 'admin' && user.password === 'admin') {
         this.router.navigate(['/home']);
+      } else {
+        this.isInvalidLogin = true;
       }
     }
+  }
+
+  onResetClicked(): void {
+    this.isInvalidLogin = false;
+    this.loginGroup.reset();
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,12 +7,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  /**
+   * @description
+   */
   onAddTaskClicked(): void {
     alert(
       'Right now this functionality is not working but Will implement later, So stay tune !'
     );
+  }
+
+  /**
+   * @description
+   */
+  onAboutClicked(): void {
+    this.router.navigate(['/about']);
+  }
+
+  /**
+   * @description
+   */
+  onHomeClicked(): void {
+    this.router.navigate(['']);
   }
 }

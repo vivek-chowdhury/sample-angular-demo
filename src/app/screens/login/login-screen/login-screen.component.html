@@ -4,6 +4,9 @@
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+      <span class="invalidLogin" *ngIf="isInvalidLogin"
+        >Invalid user credentials, try admin, admin !</span
+      >
       <form [formGroup]="loginGroup">
         <div>
           <mat-form-field class="field-full-width">
@@ -37,6 +40,14 @@
         [disabled]="!loginGroup.valid"
       >
         Login
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="onResetClicked()"
+        [disabled]="!isInvalidLogin"
+      >
+        Clear
       </button>
     </mat-card-actions>
   </mat-card>
