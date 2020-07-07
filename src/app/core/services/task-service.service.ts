@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment.prod';
+import { environment } from './../../../environments/environment';
 import { ITask } from './interfaces/itask.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -9,10 +9,18 @@ import { catchError, map, tap, mergeMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TaskService {
-  constructor(private http: HttpClient) {}
+  endpointBaseUrl: string;
+
+  constructor(private http: HttpClient) {
+    if (environment.enableMock) {
+      this.endpointBaseUrl = environment.baseUrl;
+    } else {
+      this.endpointBaseUrl = environment.liveBaseUrl;
+    }
+  }
 
   public getTaskList(): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}/Task.json`).pipe(
+    return this.http.get<any>(`${this.endpointBaseUrl}/Task.json`).pipe(
       tap((data) =>
         console.log('Task List fetched from server successfully !')
       ),
@@ -37,7 +45,7 @@ export class TaskService {
   public insertTask(task: ITask): Observable<any> {
     const o = { ...task };
     delete o.key;
-    return this.http.post<any>(`${environment.baseUrl}/Task.json`, o).pipe(
+    return this.http.post<any>(`${this.endpointBaseUrl}/Task.json`, o).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
       mergeMap((data) => {
         return this.getTaskList();
@@ -49,7 +57,7 @@ export class TaskService {
     const o = { ...task };
     const name = o.key;
     delete o.key;
-    const url = `${environment.baseUrl}/Task/${name}.json`;
+    const url = `${this.endpointBaseUrl}/Task/${name}.json`;
     return this.http.put<any>(url, o).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
       mergeMap((data) => {
@@ -60,7 +68,7 @@ export class TaskService {
 
   public deleteTask(task: ITask): Observable<any> {
     const name = task.key;
-    const url = `${environment.baseUrl}/Task/${name}.json`;
+    const url = `${this.endpointBaseUrl}/Task/${name}.json`;
     return this.http.delete<any>(url).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
       mergeMap((data) => {

@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://tasksmanager-302f5.firebaseio.com',
+  baseUrl: 'api/task',
+  enableMock: true,
+  liveBaseUrl: 'https://tasksmanager-302f5.firebaseio.com',
 };
 
 /*

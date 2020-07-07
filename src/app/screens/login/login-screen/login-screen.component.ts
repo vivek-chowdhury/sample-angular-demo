@@ -50,6 +50,10 @@ export class LoginScreenComponent implements OnInit {
     }
   }
 
+  /**
+   * @description
+   *
+   */
   onResetClicked(): void {
     this.isInvalidLogin = false;
     this.loginGroup.reset();
