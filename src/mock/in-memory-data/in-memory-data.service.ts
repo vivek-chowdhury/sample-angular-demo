@@ -1,3 +1,4 @@
+import { MockTask } from './../mock-service/mock-task-list.service';
 import { ITask } from './../../app/core/services/interfaces/itask.interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -5,11 +6,16 @@ import {
   InMemoryDbService,
   RequestInfo,
   STATUS,
+  RequestCore,
 } from 'angular-in-memory-web-api';
 import { HttpHeaders, HttpRequest } from '@angular/common/http';
 
-export interface ITaskList {
+interface ITaskList {
   task: [];
+}
+
+interface IHttpRequest extends RequestCore {
+  body: any;
 }
 
 @Injectable({
@@ -24,7 +30,6 @@ export class InMemoryDataService extends InMemoryDbService {
     this.primaryKeyCounter = 2;
     this.taskList = [
       {
-        id: '1',
         key: '-MBJxU7rVAPGD4LuyQaL',
         description: 'New Task Added',
         priority: 'high',
@@ -32,7 +37,6 @@ export class InMemoryDataService extends InMemoryDbService {
         status: 'notstarted',
       },
       {
-        id: '2',
         key: '-MBJy1c3-E68mW3H30h0',
         description: 'Lets do something',
         priority: 'high',
@@ -49,7 +53,7 @@ export class InMemoryDataService extends InMemoryDbService {
   }
 
   post(reqInfo: RequestInfo) {
-    const httpBody = reqInfo.req['body'];
+    const httpBody = (reqInfo.req as IHttpRequest).body;
     httpBody.id = String(++this.primaryKeyCounter);
     const taskList: ITask[] = this.getTaskList(reqInfo);
     taskList.push(httpBody);
@@ -99,7 +103,7 @@ export class InMemoryDataService extends InMemoryDbService {
   }
 
   getRecordId(reqInfo: RequestInfo) {
-    const httpBody = reqInfo.req['body'];
+    const httpBody = (reqInfo.req as IHttpRequest).body;
     const url = reqInfo.url;
     let recordid = url.split('api/task/Task/')[1];
     recordid = recordid.split('.json')[0];
