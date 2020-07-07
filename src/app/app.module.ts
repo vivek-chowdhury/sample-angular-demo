@@ -1,4 +1,3 @@
-import { environment } from './../environments/environment';
 import { InMemoryDataService } from './../mock/in-memory-data/in-memory-data.service';
 import { LoginModule } from './screens/login/login.module';
 import { HomeModule } from './screens/home/home.module';
@@ -13,6 +12,9 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +33,12 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
           delay: 500,
         })
       : [],
+    StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({
+      name: 'Sample NGRX Application',
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

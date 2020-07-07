@@ -49,6 +49,12 @@
       >
         Clear
       </button>
+      <mat-checkbox
+        class="example-margin"
+        (change)="onRememberMeChanged()"
+        [checked]="rememberMeChecked"
+        >Remember me
+      </mat-checkbox>
     </mat-card-actions>
   </mat-card>
 </div>

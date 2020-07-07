@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [DialogBoxComponent],
@@ -33,6 +34,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatMenuModule,
+    MatCheckboxModule,
   ],
   exports: [
     MatButtonModule,
@@ -48,6 +50,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatProgressSpinnerModule,
     MatMenuModule,
     DialogBoxComponent,
+    MatCheckboxModule,
   ],
   entryComponents: [DialogBoxComponent],
 })

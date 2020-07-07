@@ -1,3 +1,4 @@
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockRouter } from './../../../mock/mock-service/mock-router';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
@@ -17,6 +18,15 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let location: Location;
+  let store: MockStore;
+  const initialState = {
+    homeOptions: {
+      isAddTaskVisible: false,
+    },
+    logout: {
+      visible: false,
+    },
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,9 +35,11 @@ describe('HeaderComponent', () => {
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
         { provide: Router, useClass: MockRouter },
+        provideMockStore({ initialState }),
       ],
     }).compileComponents();
 
+    store = TestBed.inject(MockStore);
     location = TestBed.get(Location);
   }));
 

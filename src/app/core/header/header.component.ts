@@ -1,5 +1,8 @@
+import { IHeaderState } from './state/iheader.state';
+import { headerSelector } from './state/header.reducer';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private router: Router) {}
+  isAddTaskOptionRequired: boolean;
+  isLogoutRequired: boolean;
 
-  ngOnInit(): void {}
+  constructor(private router: Router, private store: Store<IHeaderState>) {}
+
+  ngOnInit(): void {
+    // TODO: Need to unsubscrbe later
+    this.store.select(headerSelector).subscribe((state) => {
+      if (state) {
+        this.isAddTaskOptionRequired = state.homeOptions.isAddTaskVisible;
+        this.isLogoutRequired = state.logout.isVisible;
+      }
+    });
+  }
 
   /**
    * @description

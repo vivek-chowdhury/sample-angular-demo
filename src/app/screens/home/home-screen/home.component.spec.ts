@@ -1,3 +1,4 @@
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
 import { TaskService } from '../../../core/services/task-service.service';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
@@ -11,16 +12,26 @@ import { of } from 'rxjs';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let store: MockStore;
+  const initialState = {
+    tasks: [],
+    selectedTask: null,
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [HomeComponent],
       imports: [MatButtonModule, HttpClientTestingModule, MatDialogModule],
-      providers: [TaskService, SpinnerManagerService],
+      providers: [
+        TaskService,
+        SpinnerManagerService,
+        provideMockStore({ initialState }),
+      ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

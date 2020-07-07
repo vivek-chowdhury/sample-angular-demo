@@ -1,3 +1,7 @@
+import {
+  IButtonAction,
+  headerToggleButtonState,
+} from './../../../core/header/state/header.action';
 import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -12,6 +16,8 @@ import {
   ITaskEvent,
 } from '../../../core/services/interfaces/itask.interface';
 import { TaskService } from '../../../core/services/task-service.service';
+import { Store } from '@ngrx/store';
+import { IHome } from '../state/ihome.state';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +31,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private matDialog: MatDialog,
-    private spinnerManager: SpinnerManagerService
+    private spinnerManager: SpinnerManagerService,
+    private store: Store<IHome>
   ) {}
 
   /**
@@ -36,6 +43,12 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.taskList = [];
     this.getTaskList();
+
+    const props: IButtonAction = {
+      isAddTaskVisible: true,
+      isLogoutRequired: true,
+    };
+    this.store.dispatch(headerToggleButtonState({ button: props }));
   }
 
   /**
