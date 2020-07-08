@@ -1,23 +1,21 @@
-import {
-  IButtonAction,
-  headerToggleButtonState,
-} from './../../../core/header/state/header.action';
-import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
 import { Component, OnInit } from '@angular/core';
 import {
   MatDialog,
   MatDialogConfig,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ActionConstants } from './action-constants';
-import { DialogBoxComponent } from '../../../shared/dialog-box/dialog-box.component';
-import {
-  ITask,
-  ITaskEvent,
-} from '../../../core/services/interfaces/itask.interface';
-import { TaskService } from '../../../core/services/task-service.service';
 import { Store } from '@ngrx/store';
+
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import { ActionConstants } from './action-constants';
+import { TaskService } from '../../../core/services/task-service.service';
 import { IHome } from '../state/ihome.state';
+import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
+
+import * as TaskEvents from '../../../core/services/interfaces/itask.interface';
+import * as HeaderActions from './../../../core/header/state/header.action';
+import * as HomeReducer from './../state/home.reducer';
+import * as HomeActions from './../state/home.actions';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +24,7 @@ import { IHome } from '../state/ihome.state';
 })
 export class HomeComponent implements OnInit {
   dialogRef: MatDialogRef<DialogBoxComponent>;
-  taskList: ITask[];
+  taskList: TaskEvents.ITask[];
 
   constructor(
     private taskService: TaskService,
@@ -42,27 +40,39 @@ export class HomeComponent implements OnInit {
    */
   ngOnInit(): void {
     this.taskList = [];
-    this.getTaskList();
 
-    const props: IButtonAction = {
-      isAddTaskVisible: true,
-      isLogoutRequired: true,
-    };
-    this.store.dispatch(headerToggleButtonState({ button: props }));
+    this.store.select(HomeReducer.taskListSelector).subscribe((tasks) => {
+      if (tasks) {
+        this.taskList = tasks.tasks;
+        if (tasks.taskFetched) {
+          this.spinnerManager.hideSpinner();
+        }
+      }
+    });
+    // this.getTaskList();
+    this.store.dispatch(HomeActions.loadTaskList());
+    this.store.dispatch(
+      HeaderActions.headerToggleButtonState({
+        button: { isAddTaskVisible: true, isLogoutRequired: true },
+      })
+    );
   }
 
   /**
-   * @description
+   * @description This function is responsible for fetching task list from the server and hiding
+   * spinner once done.
+   *
    */
-  getTaskList(): void {
-    this.taskService.getTaskList().subscribe((list) => {
-      this.taskList = list;
-      const timeoutId = setTimeout(() => {
-        this.spinnerManager.hideSpinner();
-        clearTimeout(timeoutId);
-      }, 10);
-    });
-  }
+  // This method is commented because now we are fetcing task list from Ngrx Effects.
+  // getTaskList(): void {
+  //   this.taskService.getTaskList().subscribe((list) => {
+  //     this.taskList = list;
+  //     const timeoutId = setTimeout(() => {
+  //       this.spinnerManager.hideSpinner();
+  //       clearTimeout(timeoutId);
+  //     }, 10);
+  //   });
+  // }
 
   /**
    * @description This funciton is invoked when user clicks on the 'Add new task' button. It will open
@@ -78,7 +88,7 @@ export class HomeComponent implements OnInit {
    *
    * @param event: ITaskEvent
    */
-  onUpdateTaskInvoked(event: ITaskEvent): void {
+  onUpdateTaskInvoked(event: TaskEvents.ITaskEvent): void {
     switch (event.action) {
       case ActionConstants.DELETE_TASK:
         this.deletedSelectedTask(event.task);
@@ -94,7 +104,7 @@ export class HomeComponent implements OnInit {
    *
    * @param ITask It contains task reference
    */
-  deletedSelectedTask(task: ITask): void {
+  deletedSelectedTask(task: TaskEvents.ITask): void {
     this.taskService.deleteTask(task).subscribe((result) => {
       if (result) {
         this.taskList = result;
@@ -108,7 +118,7 @@ export class HomeComponent implements OnInit {
    *
    * @param task: ITask = null
    */
-  openDialog(task: ITask = null): void {
+  openDialog(task: TaskEvents.ITask = null): void {
     const config = new MatDialogConfig();
     config.data = {
       isNewTask: true,

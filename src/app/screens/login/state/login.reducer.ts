@@ -1,4 +1,4 @@
-import { toggleRememberMeCheckBox } from './login.actions';
+import * as LoginActions from './login.actions';
 import { ILoginState } from './ilogin.state';
 import {
   createReducer,
@@ -14,21 +14,31 @@ const intialLoginState: ILoginState = {
 
 const loginFeatireSelector = createFeatureSelector<ILoginState>('login');
 
-export const loginSelector = createSelector(loginFeatireSelector, (state) => {
-  return state; // Here we can manipulate slice and send that specific part to component.
-});
+export const loginSelector = createSelector(
+  loginFeatireSelector,
+  (currentState) => {
+    return currentState; // Here we can manipulate slice and send that specific part to component.
+  }
+);
 
 export const loginReducer = createReducer<ILoginState>(
   intialLoginState,
   // This string will appear in DevTool for debugging
   on(
-    toggleRememberMeCheckBox,
-    (state, action): ILoginState => {
-      console.log('Orginal state: ', JSON.stringify(state));
+    LoginActions.toggleRememberMeCheckBox,
+    (previousState, action): ILoginState => {
+      console.log('Orginal state: ', JSON.stringify(previousState));
       return {
-        ...state,
+        ...previousState,
         ...action.login,
       };
     }
-  )
+  ),
+
+  on(LoginActions.rememberUserCredential, (previousState, action) => {
+    return {
+      ...previousState,
+      ...action.login,
+    };
+  })
 );

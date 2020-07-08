@@ -1,17 +1,17 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   IButtonAction,
   headerToggleButtonState,
 } from './../../../core/header/state/header.action';
 import { ILoginState } from './../state/ilogin.state';
-import { toggleRememberMeCheckBox } from './../state/login.actions';
 import { IAppState } from './../../../state/iapp.state';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
-import { Store } from '@ngrx/store';
 import { IUserDetail } from '../state/ilogin.state';
 import { loginSelector } from '../state/login.reducer';
+import * as LoginActions from '../state/login.actions';
 
 @Component({
   selector: 'app-login-screen',
@@ -70,11 +70,25 @@ export class LoginScreenComponent implements OnInit {
       this.spinnerManager.showSpinner();
       const user = this.loginGroup.value;
       if (user.userName === 'admin' && user.password === 'admin') {
+        this.saveUserCredentials();
         this.router.navigate(['/home']);
       } else {
         this.isInvalidLogin = true;
       }
     }
+  }
+
+  saveUserCredentials(): void {
+    const loginState: ILoginState = {
+      rememberMe: this.rememberMeChecked,
+      user: null,
+    };
+    if (this.rememberMeChecked) {
+      loginState.user = { ...this.loginGroup.value };
+    }
+    this.store.dispatch(
+      LoginActions.rememberUserCredential({ login: loginState })
+    );
   }
 
   /**
@@ -94,7 +108,9 @@ export class LoginScreenComponent implements OnInit {
     const props: ILoginState = {
       rememberMe: this.rememberMeChecked,
     };
-    this.store.dispatch(toggleRememberMeCheckBox({ login: props }));
+    this.store.dispatch(
+      LoginActions.toggleRememberMeCheckBox({ login: props })
+    );
   }
 
   /**

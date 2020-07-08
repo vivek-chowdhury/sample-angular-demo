@@ -8,4 +8,6 @@ export interface IHome extends fromRoot.IAppState {
 export interface IHomeState {
   tasks: ITask[];
   selectedTask: ITask;
+  error: string;
+  taskFetched: boolean;
 }

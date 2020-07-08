@@ -1,8 +1,12 @@
-import { TaskService } from './../../core/services/task-service.service';
 import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+
 import { FormConstants } from './form-constants';
+import { IHome } from './../../state/ihome.state';
+import { TaskService } from './../../../../core/services/task-service.service';
+import * as HomeActions from './../../state/home.actions';
 
 @Component({
   selector: 'app-dialog-box',
@@ -22,6 +26,7 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<DialogBoxComponent>,
     private fb: FormBuilder,
     private taskService: TaskService,
+    private store: Store<IHome>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {}
 
@@ -76,11 +81,14 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
         this.data && this.data.task ? this.data.task.key : '';
       o.key = name;
       if (name) {
-        this.updateObservable$ = this.taskService
-          .updateTask(o)
-          .subscribe((result) => {
-            this.dialogRef.close(result);
-          });
+        // this.updateObservable$ = this.taskService
+        //   .updateTask(o)
+        //   .subscribe((result) => {
+        //     this.dialogRef.close(result);
+        //   });
+        const updateList$ = this.store.dispatch(
+          HomeActions.updateExistingTask({ task: o })
+        );
       } else {
         this.insertObservale$ = this.taskService
           .insertTask(o)

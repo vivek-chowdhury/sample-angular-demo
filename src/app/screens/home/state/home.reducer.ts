@@ -1,20 +1,58 @@
-import { createReducer, on, createAction } from '@ngrx/store';
+import {
+  createReducer,
+  on,
+  createAction,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { IHomeState } from './ihome.state';
+import * as HomeActions from './home.actions';
 
 const initialHomeState: IHomeState = {
   tasks: [],
   selectedTask: null,
+  error: '',
+  taskFetched: false,
 };
+
+const taskFeatureSelector = createFeatureSelector<IHomeState>('home');
+export const taskListSelector = createSelector(taskFeatureSelector, (state) => {
+  return state;
+});
+
+export const errorSelector = createSelector(taskFeatureSelector, (error) => {
+  return error;
+});
+
 export const homeReducer = createReducer<IHomeState>(
   initialHomeState,
   on(
-    createAction(
-      '[HOME SCREEN] Reducer',
-      (state): IHomeState => {
-        return {
-          ...state,
-        };
-      }
-    )
+    HomeActions.loadTaskListSuccess,
+    (previousState, action): IHomeState => {
+      return {
+        ...previousState,
+        tasks: action.tasks,
+        taskFetched: true,
+      };
+    }
+  ),
+
+  on(HomeActions.loadTaskListFailed, (previousState, action) => {
+    return {
+      ...previousState,
+      error: action.error,
+    };
+  }),
+
+  on(
+    HomeActions.updateExistingTaskSuccess,
+    (previousState, action): IHomeState => {
+      debugger;
+      return {
+        ...previousState,
+        tasks: action.tasks,
+        taskFetched: true,
+      };
+    }
   )
 );

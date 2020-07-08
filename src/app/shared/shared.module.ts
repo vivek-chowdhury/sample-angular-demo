@@ -1,4 +1,3 @@
-import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +17,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
-  declarations: [DialogBoxComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -37,6 +35,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
   ],
   exports: [
+    CommonModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
@@ -49,9 +49,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatMenuModule,
-    DialogBoxComponent,
     MatCheckboxModule,
   ],
-  entryComponents: [DialogBoxComponent],
 })
 export class SharedModule {}

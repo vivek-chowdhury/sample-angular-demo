@@ -3,7 +3,8 @@ import { ITask } from './interfaces/itask.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, tap, mergeMap } from 'rxjs/operators';
+import { catchError, map, tap, mergeMap, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +20,13 @@ export class TaskService {
     }
   }
 
-  public getTaskList(): Observable<any> {
+  public getTaskList(): Observable<ITask[]> {
     return this.http.get<any>(`${this.endpointBaseUrl}/Task.json`).pipe(
       tap((data) =>
         console.log('Task List fetched from server successfully !')
       ),
-      map((data) => {
-        return this.parseTaskList(data);
+      mergeMap((data) => {
+        return of(this.parseTaskList(data));
       }),
       catchError(this.handleError)
     );
@@ -53,7 +54,7 @@ export class TaskService {
     );
   }
 
-  public updateTask(task: ITask): Observable<any> {
+  public updateTask(task: ITask): Observable<ITask[]> {
     const o = { ...task };
     const name = o.key;
     delete o.key;

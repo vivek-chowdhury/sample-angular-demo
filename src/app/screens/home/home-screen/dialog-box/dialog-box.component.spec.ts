@@ -1,4 +1,5 @@
-import { TaskService } from './../../core/services/task-service.service';
+import { TaskService } from './../../../../core/services/task-service.service';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -26,6 +27,11 @@ const data = {
 describe('DialogBoxComponent', () => {
   let component: DialogBoxComponent;
   let fixture: ComponentFixture<DialogBoxComponent>;
+  let store: MockStore;
+  const initialState = {
+    tasks: [],
+    selectedTask: null,
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,12 +53,14 @@ describe('DialogBoxComponent', () => {
         TaskService,
         { provide: MAT_DIALOG_DATA, useValue: data },
         { provide: MatDialogRef, useValue: { close: () => {} } },
+        provideMockStore({ initialState }),
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(DialogBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
