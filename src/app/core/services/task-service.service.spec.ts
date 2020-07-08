@@ -52,7 +52,7 @@ describe('TaskServiceService', () => {
 
   it('should call http put method and return task array', fakeAsync(() => {
     let result;
-    const updateTask = spyOn(service, 'updateTask').and.returnValue(of(true));
+    const updateTask = spyOn(service, 'updateTask').and.returnValue(of([]));
 
     const task: ITask = {
       id: '10',
