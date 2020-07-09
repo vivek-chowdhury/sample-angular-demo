@@ -82,7 +82,11 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
         this.data && this.data.task ? this.data.task.key : '';
       o.key = name;
       if (name) {
-        this.store.dispatch(HomeActions.updateExistingTask({ task: o }));
+        // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+        // this.store.dispatch(HomeActions.updateExistingTask({ task: o }));
+
+        // Approach 2
+        this.store.dispatch(new HomeActions.UpdateExistingTask(o));
 
         // Below line of code is commented after implementing Ngrx effect.
         // this.updateObservable$ = this.taskService
@@ -91,7 +95,11 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
         //     this.dialogRef.close(result);
         //   });
       } else {
-        this.store.dispatch(HomeActions.addNewTask({ task: o }));
+        // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+        // this.store.dispatch(HomeActions.addNewTask({ task: o }));
+
+        // Approach 2
+        this.store.dispatch(new HomeActions.AddNewTask(o));
 
         // Below line of code is commented after implementing Ngrx effect.
         // this.insertObservale$ = this.taskService

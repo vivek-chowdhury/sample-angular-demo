@@ -56,10 +56,20 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.onRequestFromHeaderReceived(message);
       });
 
-    this.store.dispatch(HomeActions.loadTaskList());
+    // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+    // this.store.dispatch(HomeActions.loadTaskList());
+    // this.store.dispatch(
+    //   HeaderActions.headerToggleButtonState({
+    //     button: { isUserLoggedIn: true, screenType: SCREENTYPES.HOME_SCREEN },
+    //   })
+    // );
+
+    // Approach 2
+    this.store.dispatch(new HomeActions.LoadTaskList());
     this.store.dispatch(
-      HeaderActions.headerToggleButtonState({
-        button: { isUserLoggedIn: true, screenType: SCREENTYPES.HOME_SCREEN },
+      new HeaderActions.HeaderToggleButtonState({
+        isUserLoggedIn: true,
+        screenType: SCREENTYPES.HOME_SCREEN,
       })
     );
   }
@@ -150,7 +160,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     //     this.taskList = result;
     //   }
     // });
-    this.store.dispatch(HomeActions.deleteExistingTask({ task }));
+
+    // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+    // this.store.dispatch(HomeActions.deleteExistingTask({ task }));
+
+    // Approach 2
+    this.store.dispatch(new HomeActions.DeleteExistingTask(task));
   }
 
   /**

@@ -1,3 +1,4 @@
+import { SCREENTYPES } from './state/iheader.state';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockRouter } from './../../../mock/mock-service/mock-router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,6 +15,7 @@ import { HeaderComponent } from './header.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MockActivatedRoute } from 'src/mock/mock-service/mock-activated-route';
 import { AppBroadcasterService } from '../services/app-broadcaster.service';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -21,12 +23,8 @@ describe('HeaderComponent', () => {
   let location: Location;
   let store: MockStore;
   const initialState = {
-    homeOptions: {
-      isAddTaskVisible: false,
-    },
-    logout: {
-      visible: false,
-    },
+    screenType: SCREENTYPES.LOGIN_SCREEN,
+    isUserLoggedIn: false,
   };
 
   beforeEach(async(() => {
@@ -39,6 +37,7 @@ describe('HeaderComponent', () => {
         provideMockStore({ initialState }),
         AppBroadcasterService,
       ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
@@ -48,6 +47,7 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
+    component.headerState = initialState;
     fixture.detectChanges();
   });
 

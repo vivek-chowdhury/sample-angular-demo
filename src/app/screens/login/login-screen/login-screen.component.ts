@@ -40,9 +40,18 @@ export class LoginScreenComponent implements OnInit, OnDestroy {
       password: ['', Validators.required],
     });
 
+    // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+    // this.store.dispatch(
+    //   HeaderActions.headerToggleButtonState({
+    //     button: { isUserLoggedIn: false, screenType: SCREENTYPES.LOGIN_SCREEN },
+    //   })
+    // );
+
+    // Approach 2
     this.store.dispatch(
-      HeaderActions.headerToggleButtonState({
-        button: { isUserLoggedIn: false, screenType: SCREENTYPES.LOGIN_SCREEN },
+      new HeaderActions.HeaderToggleButtonState({
+        isUserLoggedIn: false,
+        screenType: SCREENTYPES.LOGIN_SCREEN,
       })
     );
 
@@ -104,9 +113,13 @@ export class LoginScreenComponent implements OnInit, OnDestroy {
     if (this.rememberMeChecked) {
       loginState.user = { ...this.loginGroup.value };
     }
-    this.store.dispatch(
-      LoginActions.rememberUserCredential({ login: loginState })
-    );
+    // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+    // this.store.dispatch(
+    //   LoginActions.rememberUserCredential({ login: loginState })
+    // );
+
+    // Approach 2
+    this.store.dispatch(new LoginActions.RememberUserCredential(loginState));
   }
 
   /**
@@ -125,11 +138,18 @@ export class LoginScreenComponent implements OnInit, OnDestroy {
    */
   onRememberMeChanged(): void {
     this.rememberMeChecked = !this.rememberMeChecked;
-    const props: ILoginState = {
-      rememberMe: this.rememberMeChecked,
-    };
+
+    // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+    // const props: ILoginState = {
+    // rememberMe: this.rememberMeChecked,
+    // };
+    // this.store.dispatch(
+    //   LoginActions.toggleRememberMeCheckBox({ login: props })
+    // );
+
+    // Approach 2
     this.store.dispatch(
-      LoginActions.toggleRememberMeCheckBox({ login: props })
+      new LoginActions.ToggleRememberMe(this.rememberMeChecked)
     );
   }
 

@@ -24,9 +24,17 @@ export class AboutScreenComponent implements OnInit {
    * member variables if any
    */
   ngOnInit(): void {
+    // Approach 1: To test this uncomment approach 2 from reducer and then uncomment this
+    // this.store.dispatch(
+    //   HeaderActions.headerToggleButtonState({
+    //     button: { screenType: SCREENTYPES.ABOUT_SCREEN },
+    //   })
+    // );
+
+    // Approach 2
     this.store.dispatch(
-      HeaderActions.headerToggleButtonState({
-        button: { screenType: SCREENTYPES.ABOUT_SCREEN },
+      new HeaderActions.HeaderToggleButtonState({
+        screenType: SCREENTYPES.ABOUT_SCREEN,
       })
     );
     this.spinnerManager.hideSpinner();

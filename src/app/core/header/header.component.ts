@@ -58,9 +58,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   get isHomeMenuRequired(): boolean {
     return (
-      this.headerState &&
-      this.headerState.screenType !== SCREENTYPES.HOME_SCREEN &&
-      this.headerState.screenType !== SCREENTYPES.LOGIN_SCREEN
+      (this.headerState &&
+        this.headerState.screenType !== SCREENTYPES.HOME_SCREEN &&
+        this.headerState.screenType !== SCREENTYPES.LOGIN_SCREEN) ||
+      (!this.headerState.isUserLoggedIn &&
+        this.headerState.screenType !== SCREENTYPES.LOGIN_SCREEN)
     );
   }
 
