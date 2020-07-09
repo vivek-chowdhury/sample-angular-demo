@@ -54,7 +54,7 @@ export class InMemoryDataService extends InMemoryDbService {
 
   post(reqInfo: RequestInfo) {
     const httpBody = (reqInfo.req as IHttpRequest).body;
-    httpBody.id = String(++this.primaryKeyCounter);
+    httpBody.key = httpBody.id = String(++this.primaryKeyCounter);
     const taskList: ITask[] = this.getTaskList(reqInfo);
     taskList.push(httpBody);
     return this.getResponse(reqInfo, httpBody);

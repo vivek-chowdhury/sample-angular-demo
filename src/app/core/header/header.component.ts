@@ -65,6 +65,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * @description This getter is responsible for returning true if About option needs
+   * to be displayed in the header section.
+   *
+   * @return boolean
+   */
+  get isAboutMenuRequired(): boolean {
+    return (
+      this.headerState &&
+      this.headerState.screenType !== SCREENTYPES.ABOUT_SCREEN
+    );
+  }
+
+  /**
    * @description This method is invoked when component is intialized, it is
    * responsible for subscrbing store to listen to any changes.
    */

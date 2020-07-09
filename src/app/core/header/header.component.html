@@ -5,7 +5,9 @@
       Home
     </button>
     <span class="example-spacer"></span>
-    <button mat-button (click)="onAboutClicked()">About</button>
+    <button mat-button (click)="onAboutClicked()" *ngIf="isAboutMenuRequired">
+      About
+    </button>
     <!-- <button mat-button>Contact</button> -->
     <button
       mat-icon-button

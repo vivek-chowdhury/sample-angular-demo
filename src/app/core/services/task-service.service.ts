@@ -105,7 +105,7 @@ export class TaskService {
     const name = task.key;
     const url = `${this.endpointBaseUrl}/Task/${name}.json`;
     return this.http.delete<any>(url).pipe(
-      tap((data) => console.log('New task added to Task List ! ')),
+      tap((data) => console.log('Task deleted from server ! ')),
       map((data) => {
         return data;
       })

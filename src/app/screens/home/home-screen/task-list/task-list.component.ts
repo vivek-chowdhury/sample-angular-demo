@@ -1,4 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { ActionConstants } from './../action-constants';
 import { ITaskEvent } from './../../../../core/services/interfaces/itask.interface';
@@ -7,6 +14,7 @@ import { ITaskEvent } from './../../../../core/services/interfaces/itask.interfa
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskListComponent implements OnInit {
   displayedColumns: string[] = ['description', 'shortDescription', 'action'];
