@@ -54,6 +54,7 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
    * @description This function is responsile for populating task form
    * it data is injected.
    *
+   * @param task: ITask Contains reference of selected task
    */
   populateFormValue({ task }): void {
     if (!task) {
@@ -81,19 +82,23 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
         this.data && this.data.task ? this.data.task.key : '';
       o.key = name;
       if (name) {
+        this.store.dispatch(HomeActions.updateExistingTask({ task: o }));
+
+        // Below line of code is commented after implementing Ngrx effect.
         // this.updateObservable$ = this.taskService
         //   .updateTask(o)
         //   .subscribe((result) => {
         //     this.dialogRef.close(result);
         //   });
-        this.store.dispatch(HomeActions.updateExistingTask({ task: o }));
       } else {
+        this.store.dispatch(HomeActions.addNewTask({ task: o }));
+
+        // Below line of code is commented after implementing Ngrx effect.
         // this.insertObservale$ = this.taskService
         //   .insertTask(o)
         //   .subscribe((result) => {
         //     this.dialogRef.close(result);
         //   });
-        this.store.dispatch(HomeActions.addNewTask({ task: o }));
       }
     }
   }
@@ -107,15 +112,15 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @description
+   * @description This method will invoked when Dialog box is removed from display list.
    */
   ngOnDestroy(): void {
-    if (this.updateObservable$) {
-      this.updateObservable$.unsubscribe();
-    }
-
-    if (this.insertObservale$) {
-      this.insertObservale$.unsubscribe();
-    }
+    // Below line of code is commented after implementing Ngrx effect.
+    // if (this.updateObservable$) {
+    //   this.updateObservable$.unsubscribe();
+    // }
+    // if (this.insertObservale$) {
+    //   this.insertObservale$.unsubscribe();
+    // }
   }
 }

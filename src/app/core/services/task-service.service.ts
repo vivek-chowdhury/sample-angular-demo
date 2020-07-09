@@ -3,14 +3,7 @@ import { ITask } from './interfaces/itask.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import {
-  catchError,
-  map,
-  tap,
-  mergeMap,
-  switchMap,
-  mergeAll,
-} from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +19,12 @@ export class TaskService {
     }
   }
 
+  /**
+   * @description This function is responsible for fetching list of available task from server.
+   * It also parse raw data and change it to array of task.
+   *
+   * @return Observable<ITask[]>
+   */
   public getTaskList(): Observable<ITask[]> {
     return this.http.get<any>(`${this.endpointBaseUrl}/Task.json`).pipe(
       tap((data) =>
@@ -42,6 +41,13 @@ export class TaskService {
     );
   }
 
+  /**
+   * @description This function is responsible for parsing raw data and change it to
+   * array of task.
+   *
+   * @praram data Contains response from server
+   * @return ITask[]
+   */
   parseTaskList(data): ITask[] {
     const list: ITask[] = [];
     for (const [key, value] of Object.entries(data)) {
@@ -53,6 +59,12 @@ export class TaskService {
     return list;
   }
 
+  /**
+   * @description This function is responsible for requesting server to add new task.
+   *
+   * @praram task: ITask Contains reference of task
+   * @return Observable<any>
+   */
   public insertTask(task: ITask): Observable<any> {
     const o = { ...task };
     delete o.key;
@@ -64,6 +76,12 @@ export class TaskService {
     );
   }
 
+  /**
+   * @description This function is responsible for requesting server to update existing task.
+   *
+   * @praram task: ITask Contains reference of task
+   * @return Observable<any>
+   */
   public updateTask(task: ITask): Observable<any> {
     const o = { ...task };
     const name = o.key;
@@ -76,6 +94,13 @@ export class TaskService {
     );
   }
 
+  /**
+   * @description This function is responsible for requesting server to delete
+   * exisitng task.
+   *
+   * @praram task: ITask Contains reference of task
+   * @return Observable<any>
+   */
   public deleteTask(task: ITask): Observable<any> {
     const name = task.key;
     const url = `${this.endpointBaseUrl}/Task/${name}.json`;
@@ -87,9 +112,13 @@ export class TaskService {
     );
   }
 
-  private handleError(err) {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
+  /**
+   * @description This function is responsible for handling any error which may occure
+   * during interaction with server.
+   *
+   * @return Observable<never>
+   */
+  private handleError(err): Observable<never> {
     let errorMessage: string;
     if (err.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

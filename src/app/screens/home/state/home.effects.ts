@@ -20,7 +20,8 @@ export class HomeEffects {
   constructor(private action$: Actions, private taskService: TaskService) {}
 
   /**
-   * @description
+   * @description This effect is responsible for fetching task list from server and dispatching new
+   * action depending upon response from server.
    */
   loadTaskList$ = createEffect(() => {
     return this.action$.pipe(
@@ -35,7 +36,8 @@ export class HomeEffects {
   });
 
   /**
-   * @description
+   * @description This effect is responsible for updating editing task and fetching latest task list
+   * from server.
    */
   updateExistingTask$ = createEffect(() => {
     return this.action$.pipe(
@@ -58,7 +60,8 @@ export class HomeEffects {
   });
 
   /**
-   * @description
+   * @description This effect is responsible for adding new task and fetching latest task list
+   * from server.
    */
   addNewTask$ = createEffect(() => {
     return this.action$.pipe(
@@ -77,20 +80,10 @@ export class HomeEffects {
       )
     );
   });
-  //   addNewTask$ = createEffect(() => {
-  //     return this.action$.pipe(
-  //       ofType(HomeActions.addNewTask),
-  //       concatMap((action) =>
-  //         this.taskService.updateTask(action.task).pipe(
-  //           map((taskList) => HomeActions.addNewTaskSuccess({ tasks: taskList })),
-  //           catchError((error) => of(HomeActions.addNewTaskFailed({ error })))
-  //         )
-  //       )
-  //     );
-  //   });
 
   /**
-   * @description
+   * @description This effect is responsible for deleting exiting task and fetching latest task list
+   * from server.
    */
   deleteExistingTask$ = createEffect(() => {
     return this.action$.pipe(
@@ -111,19 +104,4 @@ export class HomeEffects {
       )
     );
   });
-  //   deleteExistingTask$ = createEffect(() => {
-  //     return this.action$.pipe(
-  //       ofType(HomeActions.deleteExistingTask),
-  //       concatMap((action) =>
-  //         this.taskService.updateTask(action.task).pipe(
-  //           map((taskList) =>
-  //             HomeActions.deleteExistingTaskSuccess({ tasks: taskList })
-  //           ),
-  //           catchError((error) =>
-  //             of(HomeActions.deleteExistingTaskFailed({ error }))
-  //           )
-  //         )
-  //       )
-  //     );
-  //   });
 }

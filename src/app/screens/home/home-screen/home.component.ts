@@ -40,7 +40,21 @@ export class HomeComponent implements OnInit {
    */
   ngOnInit(): void {
     this.taskList = [];
+    this.registerStore();
+    // this.getTaskList();
+    this.store.dispatch(HomeActions.loadTaskList());
+    this.store.dispatch(
+      HeaderActions.headerToggleButtonState({
+        button: { isAddTaskVisible: true, isLogoutRequired: true },
+      })
+    );
+  }
 
+  /**
+   * @description This method is responsible for subscrbing store and listening to any changes
+   *  in Home state.
+   */
+  registerStore(): void {
     this.store.select(HomeReducer.taskListSelector).subscribe((tasks) => {
       if (tasks) {
         this.taskList = tasks.tasks;
@@ -53,21 +67,13 @@ export class HomeComponent implements OnInit {
         }
       }
     });
-    // this.getTaskList();
-    this.store.dispatch(HomeActions.loadTaskList());
-    this.store.dispatch(
-      HeaderActions.headerToggleButtonState({
-        button: { isAddTaskVisible: true, isLogoutRequired: true },
-      })
-    );
   }
 
   /**
    * @description This function is responsible for fetching task list from the server and hiding
    * spinner once done.
-   *
+   * [This method is commented because now we are fetcing task list from Ngrx Effects.]
    */
-  // This method is commented because now we are fetcing task list from Ngrx Effects.
   // getTaskList(): void {
   //   this.taskService.getTaskList().subscribe((list) => {
   //     this.taskList = list;
@@ -130,7 +136,7 @@ export class HomeComponent implements OnInit {
       task,
     };
     this.dialogRef = this.matDialog.open(DialogBoxComponent, config);
-
+    // Below statement is commented after implementing Ngrx effect
     // this.dialogRef.afterClosed().subscribe((result) => {
     //   if (result) {
     //     this.taskList = result;

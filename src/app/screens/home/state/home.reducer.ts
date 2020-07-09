@@ -8,6 +8,7 @@ import {
 import { IHomeState } from './ihome.state';
 import * as HomeActions from './home.actions';
 
+// Contains inital state of Home screen
 const initialHomeState: IHomeState = {
   tasks: [],
   selectedTask: null,
@@ -24,8 +25,14 @@ export const errorSelector = createSelector(taskFeatureSelector, (error) => {
   return error;
 });
 
+/**
+ * @description This createReducer contains list of reducer responsible for handling
+ * state of Home screen.
+ *
+ */
 export const homeReducer = createReducer<IHomeState>(
   initialHomeState,
+  // This will invoke when application successfully fetch list of task from server
   on(
     HomeActions.loadTaskListSuccess,
     (previousState, action): IHomeState => {
@@ -37,6 +44,7 @@ export const homeReducer = createReducer<IHomeState>(
     }
   ),
 
+  // This will invoke when application failed to load task from server
   on(HomeActions.loadTaskListFailed, (previousState, action) => {
     return {
       ...previousState,
@@ -44,6 +52,7 @@ export const homeReducer = createReducer<IHomeState>(
     };
   }),
 
+  // This will invoke on successful updation of selected task
   on(
     HomeActions.updateExistingTaskSuccess,
     (previousState, action): IHomeState => {
@@ -55,6 +64,7 @@ export const homeReducer = createReducer<IHomeState>(
     }
   ),
 
+  // This will invoke on successful addtion of new task
   on(
     HomeActions.addNewTaskSuccess,
     (previousState, action): IHomeState => {
@@ -66,6 +76,7 @@ export const homeReducer = createReducer<IHomeState>(
     }
   ),
 
+  // This will invoke on successful deletion of selected task
   on(
     HomeActions.deleteExistingTaskSuccess,
     (previousState, action): IHomeState => {
