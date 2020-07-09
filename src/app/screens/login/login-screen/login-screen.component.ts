@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   IButtonAction,
@@ -12,16 +12,18 @@ import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.s
 import { IUserDetail } from '../state/ilogin.state';
 import { loginSelector } from '../state/login.reducer';
 import * as LoginActions from '../state/login.actions';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-screen',
   templateUrl: './login-screen.component.html',
   styleUrls: ['./login-screen.component.scss'],
 })
-export class LoginScreenComponent implements OnInit {
+export class LoginScreenComponent implements OnInit, OnDestroy {
   loginGroup: FormGroup;
   isInvalidLogin: boolean;
   rememberMeChecked: boolean;
+  componentActive = true;
 
   constructor(
     private fb: FormBuilder,
@@ -31,8 +33,8 @@ export class LoginScreenComponent implements OnInit {
   ) {}
 
   /**
-   * @description
-   *
+   * @description This method will invoke when Component is initialized, it is
+   * responsible for initialing form group and other member variables.
    */
   ngOnInit(): void {
     this.loginGroup = this.fb.group({
@@ -46,13 +48,7 @@ export class LoginScreenComponent implements OnInit {
     };
     this.store.dispatch(headerToggleButtonState({ button: props }));
 
-    // TODO: Need to unsubscribe later
-    this.store.select(loginSelector).subscribe((state) => {
-      if (state) {
-        this.rememberMeChecked = state.rememberMe;
-        this.parseUserDetail(state.user);
-      }
-    });
+    this.registerStore();
 
     // TODO: Need to remove this timeout later
     const timeoutId = setTimeout(() => {
@@ -62,8 +58,27 @@ export class LoginScreenComponent implements OnInit {
   }
 
   /**
-   * @description
-   *
+   * @description This method is responsible for subscrbing store and listening to any changes
+   *  in Login state.
+   */
+  registerStore(): void {
+    this.store
+      .pipe(
+        select(loginSelector),
+        takeWhile(() => this.componentActive)
+      )
+      .subscribe((state) => {
+        if (state) {
+          this.rememberMeChecked = state.rememberMe;
+          this.parseUserDetail(state.user);
+        }
+      });
+  }
+
+  /**
+   * @description This method will invoke, when user clicks on the Login button.
+   * It is responsible for validating user and if user is admin then it will allow user
+   * to enter Home screen.
    */
   onLoginClicked(): void {
     if (this.loginGroup.valid) {
@@ -78,6 +93,10 @@ export class LoginScreenComponent implements OnInit {
     }
   }
 
+  /**
+   * @description This method is responsible for saving user credention in store if
+   * 'Remember me' check box is checked.
+   */
   saveUserCredentials(): void {
     const loginState: ILoginState = {
       rememberMe: this.rememberMeChecked,
@@ -92,7 +111,8 @@ export class LoginScreenComponent implements OnInit {
   }
 
   /**
-   * @description
+   * @description This method is invoked when user clicks on the Reset button. It is
+   * responsible for resetting form to initial state.
    *
    */
   onResetClicked(): void {
@@ -101,7 +121,8 @@ export class LoginScreenComponent implements OnInit {
   }
 
   /**
-   * @description
+   * @description This method is invoked when user clicks on the Remember me check box.
+   * It is responsible for saving state to Store and in member variable.
    */
   onRememberMeChanged(): void {
     this.rememberMeChecked = !this.rememberMeChecked;
@@ -114,7 +135,8 @@ export class LoginScreenComponent implements OnInit {
   }
 
   /**
-   * @description
+   * @description This method is invoked when user return to the login screen and as
+   * per setting application needs to prepopulate login form with pervious values.
    *
    */
   parseUserDetail(user: IUserDetail): void {
@@ -124,5 +146,14 @@ export class LoginScreenComponent implements OnInit {
         password: user.password,
       });
     }
+  }
+
+  /**
+   * @description This method will invoked when component is removed from the display list,
+   * it is responsible for setting member variable to true which will further unsubscibe any
+   * subscription to store.
+   */
+  ngOnDestroy(): void {
+    this.componentActive = false;
   }
 }

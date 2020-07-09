@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { takeWhile } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   MatDialog,
   MatDialogConfig,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { ActionConstants } from './action-constants';
@@ -22,9 +23,10 @@ import * as HomeActions from './../state/home.actions';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<DialogBoxComponent>;
   taskList: TaskEvents.ITask[];
+  componentActive = true;
 
   constructor(
     private taskService: TaskService,
@@ -55,18 +57,23 @@ export class HomeComponent implements OnInit {
    *  in Home state.
    */
   registerStore(): void {
-    this.store.select(HomeReducer.taskListSelector).subscribe((tasks) => {
-      if (tasks) {
-        this.taskList = tasks.tasks;
-        if (tasks.taskFetched) {
-          this.spinnerManager.hideSpinner();
+    this.store
+      .pipe(
+        select(HomeReducer.taskListSelector),
+        takeWhile(() => this.componentActive)
+      )
+      .subscribe((tasks) => {
+        if (tasks) {
+          this.taskList = tasks.tasks;
+          if (tasks.taskFetched) {
+            this.spinnerManager.hideSpinner();
+          }
+          if (this.dialogRef) {
+            this.dialogRef.close();
+            this.dialogRef = null;
+          }
         }
-        if (this.dialogRef) {
-          this.dialogRef.close();
-          this.dialogRef = null;
-        }
-      }
-    });
+      });
   }
 
   /**
@@ -142,5 +149,14 @@ export class HomeComponent implements OnInit {
     //     this.taskList = result;
     //   }
     // });
+  }
+
+  /**
+   * @description This method will invoked when component is removed from the display list,
+   * it is responsible for setting member variable to true which will further unsubscibe any
+   * subscription to store.
+   */
+  ngOnDestroy(): void {
+    this.componentActive = false;
   }
 }
