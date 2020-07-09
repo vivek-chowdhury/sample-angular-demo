@@ -1,13 +1,14 @@
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
-import { TaskService } from '../../../core/services/task-service.service';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HomeComponent } from './home.component';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+
+import { AppBroadcasterService } from './../../../core/services/app-broadcaster.service';
+import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
+import { TaskService } from '../../../core/services/task-service.service';
+import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -25,6 +26,7 @@ describe('HomeComponent', () => {
       providers: [
         TaskService,
         SpinnerManagerService,
+        AppBroadcasterService,
         provideMockStore({ initialState }),
       ],
     }).compileComponents();

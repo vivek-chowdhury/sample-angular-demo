@@ -12,6 +12,11 @@ import { ActionConstants } from './action-constants';
 import { TaskService } from '../../../core/services/task-service.service';
 import { IHome } from '../state/ihome.state';
 import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
+import { SCREENTYPES } from './../../../core/header/state/iheader.state';
+import {
+  IMessageBroadcaster,
+  AppBroadcasterService,
+} from './../../../core/services/app-broadcaster.service';
 
 import * as TaskEvents from '../../../core/services/interfaces/itask.interface';
 import * as HeaderActions from './../../../core/header/state/header.action';
@@ -32,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private matDialog: MatDialog,
     private spinnerManager: SpinnerManagerService,
-    private store: Store<IHome>
+    private store: Store<IHome>,
+    private broadcaster: AppBroadcasterService
   ) {}
 
   /**
@@ -44,10 +50,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.taskList = [];
     this.registerStore();
     // this.getTaskList();
+    this.broadcaster.messageBroadcaster$
+      .pipe(takeWhile(() => this.componentActive))
+      .subscribe((message) => {
+        this.onRequestFromHeaderReceived(message);
+      });
+
     this.store.dispatch(HomeActions.loadTaskList());
     this.store.dispatch(
       HeaderActions.headerToggleButtonState({
-        button: { isAddTaskVisible: true, isLogoutRequired: true },
+        button: { isUserLoggedIn: true, screenType: SCREENTYPES.HOME_SCREEN },
       })
     );
   }
@@ -90,6 +102,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   //     }, 10);
   //   });
   // }
+
+  onRequestFromHeaderReceived(message: IMessageBroadcaster): void {
+    if (!message) {
+      return;
+    }
+    switch (message.messageType) {
+      case HeaderActions.HeaderMenuActions.ADD_NEW_TASK:
+        this.addNewTask();
+        break;
+    }
+  }
 
   /**
    * @description This funciton is invoked when user clicks on the 'Add new task' button. It will open

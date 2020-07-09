@@ -2,17 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {
-  IButtonAction,
-  headerToggleButtonState,
-} from './../../../core/header/state/header.action';
+import * as HeaderActions from './../../../core/header/state/header.action';
 import { ILoginState } from './../state/ilogin.state';
-import { IAppState } from './../../../state/iapp.state';
+import { IAppState, IUserDetail } from './../../../state/iapp.state';
 import { SpinnerManagerService } from './../../../core/spinner/spinner-manager.service';
-import { IUserDetail } from '../state/ilogin.state';
 import { loginSelector } from '../state/login.reducer';
 import * as LoginActions from '../state/login.actions';
 import { takeWhile } from 'rxjs/operators';
+import { SCREENTYPES } from 'src/app/core/header/state/iheader.state';
 
 @Component({
   selector: 'app-login-screen',
@@ -42,11 +39,11 @@ export class LoginScreenComponent implements OnInit, OnDestroy {
       password: ['', Validators.required],
     });
 
-    const props: IButtonAction = {
-      isAddTaskVisible: false,
-      isLogoutRequired: false,
-    };
-    this.store.dispatch(headerToggleButtonState({ button: props }));
+    this.store.dispatch(
+      HeaderActions.headerToggleButtonState({
+        button: { isUserLoggedIn: false, screenType: SCREENTYPES.LOGIN_SCREEN },
+      })
+    );
 
     this.registerStore();
 

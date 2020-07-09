@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 import { HeaderComponent } from './header.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MockActivatedRoute } from 'src/mock/mock-service/mock-activated-route';
+import { AppBroadcasterService } from '../services/app-broadcaster.service';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -36,6 +37,7 @@ describe('HeaderComponent', () => {
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
         { provide: Router, useClass: MockRouter },
         provideMockStore({ initialState }),
+        AppBroadcasterService,
       ],
     }).compileComponents();
 

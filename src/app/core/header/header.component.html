@@ -1,15 +1,17 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <span>My CRUD APPLICATION</span>
-    <button mat-button (click)="onHomeClicked()">Home</button>
+    <button mat-button (click)="onHomeClicked()" *ngIf="isHomeMenuRequired">
+      Home
+    </button>
     <span class="example-spacer"></span>
     <button mat-button (click)="onAboutClicked()">About</button>
-    <button mat-button>Contact</button>
+    <!-- <button mat-button>Contact</button> -->
     <button
       mat-icon-button
       class="example-icon"
       [matMenuTriggerFor]="menu"
-      *ngIf="isAddTaskOptionRequired || isLogoutRequired"
+      *ngIf="isNewTaskRequired || isLogoutOptionRequired"
     >
       <mat-icon>menu</mat-icon>
     </button>
@@ -18,13 +20,17 @@
     <button
       mat-menu-item
       (click)="onAddTaskClicked()"
-      *ngIf="isAddTaskOptionRequired"
+      *ngIf="isNewTaskRequired"
     >
       <mat-icon>library_add</mat-icon>
       <span>Add Task</span>
     </button>
 
-    <button mat-menu-item (click)="onAddTaskClicked()" *ngIf="isLogoutRequired">
+    <button
+      mat-menu-item
+      (click)="onLogoutClicked()"
+      *ngIf="isLogoutOptionRequired"
+    >
       <mat-icon>exit_to_app</mat-icon>
       <span>Logout</span>
     </button>

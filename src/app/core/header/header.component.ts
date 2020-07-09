@@ -3,8 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
-import { IHeaderState } from './state/iheader.state';
+import { IHeaderState, SCREENTYPES } from './state/iheader.state';
 import { headerSelector } from './state/header.reducer';
+import { AppBroadcasterService } from '../services/app-broadcaster.service';
+import { HeaderMenuActions } from './state/header.action';
 
 @Component({
   selector: 'app-header',
@@ -12,11 +14,55 @@ import { headerSelector } from './state/header.reducer';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isAddTaskOptionRequired: boolean;
-  isLogoutRequired: boolean;
   componentActive = true;
+  headerState: IHeaderState;
 
-  constructor(private router: Router, private store: Store<IHeaderState>) {}
+  constructor(
+    private router: Router,
+    private store: Store<IHeaderState>,
+    private broadcaster: AppBroadcasterService
+  ) {}
+
+  /**
+   * @description This getter is responsible for returning true if New Task option needs
+   * to be displayed in the header sub menu.
+   *
+   * @return boolean
+   */
+  get isNewTaskRequired(): boolean {
+    return (
+      this.headerState &&
+      this.headerState.screenType === SCREENTYPES.HOME_SCREEN
+    );
+  }
+
+  /**
+   * @description This getter is responsible for returning true if Logout option needs
+   * to be displayed in the header sub menu.
+   *
+   * @return boolean
+   */
+  get isLogoutOptionRequired(): boolean {
+    return (
+      this.headerState &&
+      this.headerState.isUserLoggedIn &&
+      this.headerState.screenType !== SCREENTYPES.LOGIN_SCREEN
+    );
+  }
+
+  /**
+   * @description This getter is responsible for returning true if Home option needs
+   * to be displayed in the header section.
+   *
+   * @return boolean
+   */
+  get isHomeMenuRequired(): boolean {
+    return (
+      this.headerState &&
+      this.headerState.screenType !== SCREENTYPES.HOME_SCREEN &&
+      this.headerState.screenType !== SCREENTYPES.LOGIN_SCREEN
+    );
+  }
 
   /**
    * @description This method is invoked when component is intialized, it is
@@ -30,8 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       )
       .subscribe((state) => {
         if (state) {
-          this.isAddTaskOptionRequired = state.homeOptions.isAddTaskVisible;
-          this.isLogoutRequired = state.logout.isVisible;
+          this.headerState = state;
         }
       });
   }
@@ -41,9 +86,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * from the Header menu.
    */
   onAddTaskClicked(): void {
-    alert(
-      'Right now this functionality is not working but Will implement later, So stay tune !'
-    );
+    this.broadcaster.braodCastMessage({
+      messageType: HeaderMenuActions.ADD_NEW_TASK,
+      payload: null,
+    });
+  }
+
+  /**
+   * @description This method is invoked when user clicks on the Logout option
+   * from the Header menu.
+   */
+  onLogoutClicked(): void {
+    this.broadcaster.braodCastMessage({
+      messageType: HeaderMenuActions.LOGOUT_USER,
+      payload: null,
+    });
+    this.router.navigate(['']);
   }
 
   /**
@@ -61,7 +119,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * navigate to Home screen.
    */
   onHomeClicked(): void {
-    this.router.navigate(['']);
+    if (this.headerState && this.headerState.isUserLoggedIn) {
+      this.router.navigate(['home']);
+    } else {
+      this.router.navigate(['']);
+    }
   }
 
   /**
