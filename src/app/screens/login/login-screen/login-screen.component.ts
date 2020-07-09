@@ -86,6 +86,7 @@ export class LoginScreenComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home']);
       } else {
         this.isInvalidLogin = true;
+        this.spinnerManager.hideSpinner();
       }
     }
   }
