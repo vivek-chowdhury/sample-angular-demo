@@ -63,11 +63,14 @@ export class InMemoryDataService extends InMemoryDbService {
   put(reqInfo: RequestInfo) {
     const userRequest = this.getRecordId(reqInfo);
     const taskList: ITask[] = this.getTaskList(reqInfo);
-    taskList.map((task: ITask) => {
-      if (task.key === userRequest.recordId) {
-        Object.assign(task, userRequest.body);
+    let i = 0;
+    for (i = 0; i < taskList.length; i++) {
+      if (taskList[i].key === userRequest.recordId) {
+        break;
       }
-    });
+    }
+    const matched = { ...taskList[i], ...userRequest.body };
+    taskList[i] = matched;
     return this.getResponse(reqInfo, userRequest.body);
   }
 

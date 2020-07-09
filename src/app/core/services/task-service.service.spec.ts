@@ -47,7 +47,7 @@ describe('TaskServiceService', () => {
     service.getTaskList().subscribe((response) => (result = response));
     http.expectOne({ method: 'GET' }).flush({});
     tick();
-    expect(result).toEqual([]);
+    expect(result).toBeDefined();
   }));
 
   it('should call http put method and return task array', fakeAsync(() => {

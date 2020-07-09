@@ -1,3 +1,4 @@
+import { ITask } from './../../../core/services/interfaces/itask.interface';
 import {
   mergeMap,
   map,
@@ -5,6 +6,7 @@ import {
   concatMap,
   mergeAll,
   switchMap,
+  switchAll,
 } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -38,18 +40,20 @@ export class HomeEffects {
   updateExistingTask$ = createEffect(() => {
     return this.action$.pipe(
       ofType(HomeActions.updateExistingTask),
-      mergeMap((action) => {
-        return this.taskService.updateTask(action.task).pipe(
-          switchMap((taskList) => {
-            return of(
-              HomeActions.updateExistingTaskSuccess({ tasks: taskList })
+      mergeMap((action) =>
+        this.taskService.updateTask(action.task).pipe(
+          mergeMap(() => {
+            return this.taskService.getTaskList().pipe(
+              map((task) => {
+                return HomeActions.updateExistingTaskSuccess({ tasks: task });
+              })
             );
           }),
           catchError((error) =>
             of(HomeActions.updateExistingTaskFailed({ error }))
           )
-        );
-      })
+        )
+      )
     );
   });
 
@@ -59,14 +63,31 @@ export class HomeEffects {
   addNewTask$ = createEffect(() => {
     return this.action$.pipe(
       ofType(HomeActions.addNewTask),
-      concatMap((action) =>
-        this.taskService.updateTask(action.task).pipe(
-          map((taskList) => HomeActions.addNewTaskSuccess({ tasks: taskList })),
+      mergeMap((action) =>
+        this.taskService.insertTask(action.task).pipe(
+          mergeMap(() => {
+            return this.taskService.getTaskList().pipe(
+              map((task) => {
+                return HomeActions.addNewTaskSuccess({ tasks: task });
+              })
+            );
+          }),
           catchError((error) => of(HomeActions.addNewTaskFailed({ error })))
         )
       )
     );
   });
+  //   addNewTask$ = createEffect(() => {
+  //     return this.action$.pipe(
+  //       ofType(HomeActions.addNewTask),
+  //       concatMap((action) =>
+  //         this.taskService.updateTask(action.task).pipe(
+  //           map((taskList) => HomeActions.addNewTaskSuccess({ tasks: taskList })),
+  //           catchError((error) => of(HomeActions.addNewTaskFailed({ error })))
+  //         )
+  //       )
+  //     );
+  //   });
 
   /**
    * @description
@@ -74,11 +95,15 @@ export class HomeEffects {
   deleteExistingTask$ = createEffect(() => {
     return this.action$.pipe(
       ofType(HomeActions.deleteExistingTask),
-      concatMap((action) =>
-        this.taskService.updateTask(action.task).pipe(
-          map((taskList) =>
-            HomeActions.deleteExistingTaskSuccess({ tasks: taskList })
-          ),
+      mergeMap((action) =>
+        this.taskService.deleteTask(action.task).pipe(
+          mergeMap(() => {
+            return this.taskService.getTaskList().pipe(
+              map((task) => {
+                return HomeActions.deleteExistingTaskSuccess({ tasks: task });
+              })
+            );
+          }),
           catchError((error) =>
             of(HomeActions.deleteExistingTaskFailed({ error }))
           )
@@ -86,4 +111,19 @@ export class HomeEffects {
       )
     );
   });
+  //   deleteExistingTask$ = createEffect(() => {
+  //     return this.action$.pipe(
+  //       ofType(HomeActions.deleteExistingTask),
+  //       concatMap((action) =>
+  //         this.taskService.updateTask(action.task).pipe(
+  //           map((taskList) =>
+  //             HomeActions.deleteExistingTaskSuccess({ tasks: taskList })
+  //           ),
+  //           catchError((error) =>
+  //             of(HomeActions.deleteExistingTaskFailed({ error }))
+  //           )
+  //         )
+  //       )
+  //     );
+  //   });
 }

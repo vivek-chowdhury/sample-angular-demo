@@ -86,15 +86,14 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
         //   .subscribe((result) => {
         //     this.dialogRef.close(result);
         //   });
-        const updateList$ = this.store.dispatch(
-          HomeActions.updateExistingTask({ task: o })
-        );
+        this.store.dispatch(HomeActions.updateExistingTask({ task: o }));
       } else {
-        this.insertObservale$ = this.taskService
-          .insertTask(o)
-          .subscribe((result) => {
-            this.dialogRef.close(result);
-          });
+        // this.insertObservale$ = this.taskService
+        //   .insertTask(o)
+        //   .subscribe((result) => {
+        //     this.dialogRef.close(result);
+        //   });
+        this.store.dispatch(HomeActions.addNewTask({ task: o }));
       }
     }
   }

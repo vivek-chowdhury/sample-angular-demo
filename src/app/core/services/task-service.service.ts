@@ -3,8 +3,14 @@ import { ITask } from './interfaces/itask.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, tap, mergeMap, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {
+  catchError,
+  map,
+  tap,
+  mergeMap,
+  switchMap,
+  mergeAll,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +31,14 @@ export class TaskService {
       tap((data) =>
         console.log('Task List fetched from server successfully !')
       ),
-      mergeMap((data) => {
-        return of(this.parseTaskList(data));
+      map((data) => {
+        return environment.enableMock
+          ? Object.assign([], data)
+          : this.parseTaskList(data);
       }),
-      catchError(this.handleError)
+      catchError((error) => {
+        return this.handleError(error);
+      })
     );
   }
 
@@ -36,8 +46,8 @@ export class TaskService {
     const list: ITask[] = [];
     for (const [key, value] of Object.entries(data)) {
       if (key !== 'null' && data[key] && data[key] instanceof Object) {
-        data[key].key = key;
-        list.push(data[key]);
+        const o = { ...data[key], key };
+        list.push(o);
       }
     }
     return list;
@@ -48,21 +58,20 @@ export class TaskService {
     delete o.key;
     return this.http.post<any>(`${this.endpointBaseUrl}/Task.json`, o).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
-      mergeMap((data) => {
-        return this.getTaskList();
+      map((data) => {
+        return data;
       })
     );
   }
 
-  public updateTask(task: ITask): Observable<ITask[]> {
+  public updateTask(task: ITask): Observable<any> {
     const o = { ...task };
     const name = o.key;
-    delete o.key;
     const url = `${this.endpointBaseUrl}/Task/${name}.json`;
     return this.http.put<any>(url, o).pipe(
-      tap((data) => console.log('New task added to Task List ! ')),
-      mergeMap((data) => {
-        return this.getTaskList();
+      tap((data) => console.log('Updated existing Task ! ')),
+      map((data) => {
+        return data;
       })
     );
   }
@@ -72,8 +81,8 @@ export class TaskService {
     const url = `${this.endpointBaseUrl}/Task/${name}.json`;
     return this.http.delete<any>(url).pipe(
       tap((data) => console.log('New task added to Task List ! ')),
-      mergeMap((data) => {
-        return this.getTaskList();
+      map((data) => {
+        return data;
       })
     );
   }

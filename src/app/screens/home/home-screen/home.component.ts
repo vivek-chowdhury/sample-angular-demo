@@ -47,6 +47,10 @@ export class HomeComponent implements OnInit {
         if (tasks.taskFetched) {
           this.spinnerManager.hideSpinner();
         }
+        if (this.dialogRef) {
+          this.dialogRef.close();
+          this.dialogRef = null;
+        }
       }
     });
     // this.getTaskList();
@@ -105,11 +109,12 @@ export class HomeComponent implements OnInit {
    * @param ITask It contains task reference
    */
   deletedSelectedTask(task: TaskEvents.ITask): void {
-    this.taskService.deleteTask(task).subscribe((result) => {
-      if (result) {
-        this.taskList = result;
-      }
-    });
+    // this.taskService.deleteTask(task).subscribe((result) => {
+    //   if (result) {
+    //     this.taskList = result;
+    //   }
+    // });
+    this.store.dispatch(HomeActions.deleteExistingTask({ task }));
   }
 
   /**
@@ -125,10 +130,11 @@ export class HomeComponent implements OnInit {
       task,
     };
     this.dialogRef = this.matDialog.open(DialogBoxComponent, config);
-    this.dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.taskList = result;
-      }
-    });
+
+    // this.dialogRef.afterClosed().subscribe((result) => {
+    //   if (result) {
+    //     this.taskList = result;
+    //   }
+    // });
   }
 }

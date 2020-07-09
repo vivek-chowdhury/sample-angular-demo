@@ -47,7 +47,28 @@ export const homeReducer = createReducer<IHomeState>(
   on(
     HomeActions.updateExistingTaskSuccess,
     (previousState, action): IHomeState => {
-      debugger;
+      return {
+        ...previousState,
+        tasks: action.tasks,
+        taskFetched: true,
+      };
+    }
+  ),
+
+  on(
+    HomeActions.addNewTaskSuccess,
+    (previousState, action): IHomeState => {
+      return {
+        ...previousState,
+        tasks: action.tasks,
+        taskFetched: true,
+      };
+    }
+  ),
+
+  on(
+    HomeActions.deleteExistingTaskSuccess,
+    (previousState, action): IHomeState => {
       return {
         ...previousState,
         tasks: action.tasks,
